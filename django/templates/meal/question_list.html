@@ -1,0 +1,9 @@
+{% if q_list %}
+    <ul>
+    {% for question in q_list %}
+        <li><a href="/mealMenu/{{ question.id }}/">{{ question.menu }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>내용이 없습니다.</p>
+{% endif %}
