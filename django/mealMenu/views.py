@@ -35,21 +35,27 @@ class MenuView(View):
         return JsonResponse(res)
     
     def post(self, request):
+        print("-"*20, "\nrequest : ", request)
+        data = json.loads(request.body)   
+        print(data)
         try:
-            data = json.loads(request.body)
-            param = {
-                'date': data.get('date', None),
-                'time': data.get('time', None),
-                'restaurant': data.get('restaurant', None),
-            }
-            res = self.processParam(param)
+            if 'bot' in data.keys():
+                res = self.processParamsForChatBot(data)
+            else:
+                self.processParams(data)
+            print(res)
             return JsonResponse(res)
         except KeyError:
             return JsonResponse({"message": "KEY_ERROR"}, status=400)
     
-    def processParam(self, param):
-        if param['date'] is None: return {"message": "KEY_ERROR"}
-        filtered_param = {key: value for key, value in param.items() if value is not None}
+    def processParams(self, data):
+        params = {
+                'date': data.get("date", None),
+                'time': data.get('time', None),
+                'restaurant': data.get('restaurant', None),
+            } 
+        if params['date'] is None: return {"message": "KEY_ERROR"}
+        filtered_param = {key: value for key, value in params.items() if value is not None}
         menu_obj_list, res = Menu.objects.filter(**filtered_param), dict()
         if not menu_obj_list.exists(): self.putData()
         for menu_obj in menu_obj_list:
@@ -62,6 +68,27 @@ class MenuView(View):
                     res[date][i]['menu'][menu_obj.time] = [menu_obj.menu]
                     break
         return res
+    
+    def processParamsForChatBot(self, data):
+        params = {
+            # 'date': data['action']['params']['date'].get("value", None),
+            'date': timezone.now().strftime('%Y-%m-%d'),
+            'time': data.get('time', None),
+            'restaurant': data['action']['clientExtra'].get('restaurant', None) ,#if 'clientExtra' in data.keys() else None
+            } 
+        print(params)
+        responseBody = {
+                    '아침': '없음',
+                    '점심': '없음',
+                    '저녁': '없음',
+        }
+        if params['date'] is None: return {"message": "KEY_ERROR"}
+        filtered_param = {key: value for key, value in params.items() if value is not None}
+        menu_obj_list = Menu.objects.filter(**filtered_param)
+        for menu_obj in menu_obj_list:
+            responseBody[menu_obj.time] = menu_obj.menu   
+        return responseBody
+        
     
     def putData(self):
         crawling_data = Crawling().parsingMenu()
