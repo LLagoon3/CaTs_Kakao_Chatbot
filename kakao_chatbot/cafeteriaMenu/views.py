@@ -82,9 +82,9 @@ class MenuView(View):
         print(params)
         responseBody = {
                     '식당': params['restaurant'],
-                    '아침': '없음',
-                    '점심': '없음',
-                    '저녁': '없음',
+                    '아침': 'None',
+                    '점심': 'None',
+                    '저녁': 'None',
         }
         if params['date'] is None: return {"message": "KEY_ERROR"}
         filtered_param = {key: value for key, value in params.items() if value is not None}

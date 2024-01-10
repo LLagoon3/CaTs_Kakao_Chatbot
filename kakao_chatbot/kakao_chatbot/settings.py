@@ -25,12 +25,14 @@ SECRET_KEY = 'django-insecure-sk%oa2$**vomw@g&jpgp!d9s&zam83foi6!xkbl2jy-6ta01!a
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['lagoon3.duckdns.org']
+ALLOWED_HOSTS = ['lagoon3.duckdns.org', 'chatbot.lagoon3.duckdns.org']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'foodRecommend.apps.FoodrecommendConfig',
+    'webRenderer.apps.WebrendererConfig',
     'ocr.apps.OcrConfig',
     'cafeteriaMenu.apps.CafeteriamenuConfig',
     'testingApp.apps.TestingappConfig',
@@ -57,7 +59,7 @@ ROOT_URLCONF = 'kakao_chatbot.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

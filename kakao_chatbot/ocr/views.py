@@ -38,7 +38,44 @@ class OcrUserCheck(View):
     def post(self, request):
         data = json.loads(request.body)
         user_id = data['userRequest']['user']['id']
-        return JsonResponse(self.firebaseManager(user_id))
+        user_check = self.firebaseManager.userCheck(user_id)
+        if user_check[0]:
+            jsonBody = {
+                            "version": "2.0",
+                            "template": {
+                                "outputs": [
+                                    {
+                                        "basicCard": {
+                                            "title": "{}님 안녕하세요".format(user_check[1]),
+                                            "thumbnail": {
+                                                "imageUrl": "https://avatars.githubusercontent.com/u/141043183?s=400&u=56efb37f8ba9145f99c5e5e19ba875986825d85c&v=4"
+                                            },
+                                            "buttons": [
+                                                {
+                                                    "action": "block",
+                                                    "label": "OCR 시작하기",
+                                                    "blockId": "652f32d7b3ba010afdf6e56d"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+        else:
+            jsonBody = {
+                "version": "2.0",
+                "template": {
+                    "outputs": [
+                        {
+                            "simpleText": {
+                                "text": "CATS 회원이 아닙니다"
+                            }
+                        }
+                    ]
+                }
+            }
+        return JsonResponse(jsonBody)
 
         
         

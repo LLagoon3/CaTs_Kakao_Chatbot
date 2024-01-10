@@ -23,4 +23,6 @@ urlpatterns = [
     path('cafeteriaMenu/', include('cafeteriaMenu.urls')),
     path('ocr/', include('ocr.urls')),
     path('userInfo/', include('userInfo.urls')),
+    path('web/', include('webRenderer.urls')),
+    path('foodRecommend/', include('foodRecommend.urls')),
 ]
