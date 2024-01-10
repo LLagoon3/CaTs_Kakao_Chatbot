@@ -130,3 +130,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CBNU_COOP_URL = 'https://www.cbnucoop.com/service/restaurant/'
 
 FIREBASE_CREDENTIALS_PATH = BASE_DIR / 'userInfo/serviceAccountKey.json'
+
+KAKAOBRAIN_KEY_PATH = BASE_DIR / 'kakao_chatbot/kakaobrainAccountKey.json'

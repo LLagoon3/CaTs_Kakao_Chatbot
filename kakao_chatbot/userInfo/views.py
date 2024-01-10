@@ -19,17 +19,23 @@ class FirebaseManager():
     def setData(self, params):
         document = self.db.collection("PendingUsers").document(params["Request_id"])
         document.set(params)
+    def getId(self, user_name):
+        pending_user_ref = self.db.collection('PendingUsers')
+        query = pending_user_ref.where('Request_name', '==', user_name).limit(1)
+        try:
+            return next(query.stream()).id
+        except StopIteration:
+            return None
     def userCheck(self, user_id):
-        pending_user_ref = self.db.collection('ApprovedUsers').document(user_id)
-        pending_user = pending_user_ref.get()
-        if pending_user.exists: 
+        approved_user_ref = self.db.collection('ApprovedUsers').document(user_id)
+        approved_user = approved_user_ref.get()
+        if approved_user.exists: 
             print("Pending User Found")
-            data = pending_user.to_dict()
+            data = approved_user.to_dict()
             user_name = data.get("Request_name")
             return [True, user_name]
         else:
             return [False, '']
-            
         
 class setNameView(View):
     def get(self, request):
@@ -49,5 +55,18 @@ class setNameView(View):
             return JsonResponse({"message": "SUCCESS"}, status=200)
         except KeyError:
             return JsonResponse({"message": "KEY_ERROR"}, status=400)
+
+class getIdView(View):
+    def post(self, request):
+        data = json.loads(request.body)
+        name = data['action']['params']['name']
+        tmp = FirebaseManager()
+        user_id = tmp.getId(name)
+        if user_id is not None:
+            return JsonResponse({'id': user_id})
+        else:
+            return JsonResponse({'message': 'KEY ERROR'})
+
+            
         
         
