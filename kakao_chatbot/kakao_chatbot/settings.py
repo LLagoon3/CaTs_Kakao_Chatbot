@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-sk%oa2$**vomw@g&jpgp!d9s&zam83foi6!xkbl2jy-6ta01!a
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['lagoon3.duckdns.org', 'chatbot.lagoon3.duckdns.org']
+ALLOWED_HOSTS = ['lagoon3.duckdns.org', 'chatbot.lagoon3.duckdns.org', '*']
 
 
 # Application definition

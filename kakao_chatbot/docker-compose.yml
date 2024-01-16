@@ -1,0 +1,11 @@
+version: '3'
+services:
+  django:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    command: bash -c "python /home/api_server/kakao_chatbot/manage.py runserver 0.0.0.0:8000"
+    ports: 
+      - "8000:8000"
+    expose:
+      - "8000"
