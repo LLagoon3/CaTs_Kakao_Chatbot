@@ -4,8 +4,12 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile
-    command: bash -c "python /home/api_server/kakao_chatbot/manage.py runserver 0.0.0.0:8000"
+    command: 
+      - bash
+      - -c
+      - "uwsgi -i /home/api_server/kakao_chatbot/uwsgi.ini && tail -f /dev/null"
     ports: 
       - "8000:8000"
     expose:
       - "8000"
+
