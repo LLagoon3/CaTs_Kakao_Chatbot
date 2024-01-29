@@ -52,7 +52,65 @@ class setNameView(View):
             }
             tmp = FirebaseManager()
             tmp.setData(params=params)
-            return JsonResponse({"message": "SUCCESS"}, status=200)
+            reponseBody =  {
+                      "version": "2.0",
+                      "template": {
+                        "outputs": [
+                          {
+                            "listCard": {
+                              "header": {
+                                "title": "확인 후 제출해주세요"
+                              },
+                              "items": [
+                                {
+                                  "title": "이름",
+                                  "description": params["Request_name"],
+                                  
+                                },
+                                {
+                                  "title": "학번",
+                                  "description": params["Request_number"],
+                                  "extra": {
+                                    "key1": "value1",
+                                    "key2": "value2"
+                                  }
+                                },
+                                {
+                                  "title": "신청 이유",
+                                  "description": params["Request_text"],
+                                  "messageText": "Kakao i Voice Service",
+                                  "extra": {
+                                    "key1": "value1",
+                                    "key2": "value2"
+                                  }
+                                },
+                                 {
+                                  "title": "관심 분야",
+                                  "description": params["Request_field"],
+                                  "messageText": "Kakao i Voice Service",
+                                  "extra": {
+                                    "key1": "value1",
+                                    "key2": "value2"
+                                  }
+                                }
+                              ],
+                              "buttons": [
+                                {
+                                  "label": "제출하기",
+                                  "action": "block",
+                                  "blockId": "653508bc4bafae5aad4a01b7",
+                                  "extra": {
+                                    "key1": "value1",
+                                    "key2": "value2"
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+            }
+            return JsonResponse(reponseBody, status=200)
         except KeyError:
             return JsonResponse({"message": "KEY_ERROR"}, status=400)
 

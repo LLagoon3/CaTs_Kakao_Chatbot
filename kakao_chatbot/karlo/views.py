@@ -12,7 +12,7 @@ with open(KAKAOBRAIN_KEY_PATH, 'r') as f: REST_API_KEY = json.load(f)['key']
 # Create your views here.
 
 class karloView(View):
-    def variations(image):
+    def variations(self, image):
         r = requests.post(
             'https://api.kakaobrain.com/v2/inference/karlo/variations',
             json = {
@@ -25,7 +25,7 @@ class karloView(View):
         )
         response = json.loads(r.content)
         return response
-    def imageToString(img):
+    def imageToString(self, img):
         img_byte_arr = io.BytesIO()
         img.save(img_byte_arr, format=img.format)
         my_encoded_img = base64.encodebytes(img_byte_arr.getvalue()).decode('ascii')
