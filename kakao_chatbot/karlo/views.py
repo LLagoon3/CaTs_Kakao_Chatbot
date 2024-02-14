@@ -8,6 +8,7 @@ import base64
 from PIL import Image
 import io
 
+
 with open(KAKAOBRAIN_KEY_PATH, 'r') as f: REST_API_KEY = json.load(f)['key']
 # Create your views here.
 

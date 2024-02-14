@@ -5,6 +5,7 @@ import json
 import firebase_admin
 from firebase_admin import credentials, firestore
 from kakao_chatbot.settings import FIREBASE_CREDENTIALS_PATH
+from firebase_admin import messaging
 
 # Create your views here.
 
@@ -26,6 +27,20 @@ class FirebaseManager():
             return next(query.stream()).id
         except StopIteration:
             return None
+    def getToken(self, params = None):
+        users_ref = self.db.collection("KAKAO")
+        query_ref = users_ref.where("fcmToken", "!=", "").stream()
+        fcm_token_dict = {}
+        if params is None:
+          for doc in query_ref:
+            user_data = doc.to_dict()
+            fcm_token_dict[user_data.get("uid")] = user_data.get("fcmToken")
+        else:
+          for doc in query_ref:
+            user_data = doc.to_dict()
+            if user_data.get("uid") in params:
+              fcm_token_dict[user_data.get("uid")] = user_data.get("fcmToken")
+        return fcm_token_dict
     def userCheck(self, user_id):
         approved_user_ref = self.db.collection('ApprovedUsers').document(user_id)
         approved_user = approved_user_ref.get()
@@ -50,8 +65,8 @@ class setNameView(View):
                 "Request_text": data["action"]["params"]["Request_text"],
                 "Request_field": data["action"]["params"]["Request_field"],
             }
-            tmp = FirebaseManager()
-            tmp.setData(params=params)
+            fb = FirebaseManager()
+            fb.setData(params=params)
             reponseBody =  {
                       "version": "2.0",
                       "template": {
@@ -103,6 +118,16 @@ class setNameView(View):
                                     "key1": "value1",
                                     "key2": "value2"
                                   }
+                                },
+                                {
+                                    "label": "재제출",
+                                    "action":"block",
+                                    "blockId":"6510e5b76faba427636621b1",
+                                    "extra": {
+                                    "key1": "value1",
+                                    "key2": "value2"
+                                  }
+
                                 }
                               ]
                             }
@@ -124,6 +149,7 @@ class getIdView(View):
             return JsonResponse({'id': user_id})
         else:
             return JsonResponse({'message': 'KEY ERROR'})
+        
 
             
         

@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['lagoon3.duckdns.org', 'chatbot.lagoon3.duckdns.org', '*']
 # Application definition
 
 INSTALLED_APPS = [
+    'fcm.apps.FcmConfig',
     'foodRecommend.apps.FoodrecommendConfig',
     'webRenderer.apps.WebrendererConfig',
     'ocr.apps.OcrConfig',
@@ -132,3 +133,5 @@ CBNU_COOP_URL = 'https://www.cbnucoop.com/service/restaurant/'
 FIREBASE_CREDENTIALS_PATH = BASE_DIR / 'userInfo/serviceAccountKey.json'
 
 KAKAOBRAIN_KEY_PATH = BASE_DIR / 'kakao_chatbot/kakaobrainAccountKey.json'
+
+FACE_DETECTION_SERVER_URL = ''

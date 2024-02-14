@@ -26,4 +26,5 @@ urlpatterns = [
     path('web/', include('webRenderer.urls')),
     path('foodRecommend/', include('foodRecommend.urls')),
     path('karlo/', include('karlo.urls')),
+    path('fcm/', include('fcm.urls')),
 ]

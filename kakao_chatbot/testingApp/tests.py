@@ -38,11 +38,21 @@ data = {
   }
 }
 
-url = 'http://chatbot.lagoon3.duckdns.org/ocr/ocrUserCheck/'
-url = 'http://chatbot.lagoon3.duckdns.org/foodRecommend/random/'
-
+data = {
+  'token': 'f09N2BvkQqOgt4CU5Cyk8b:APA91bE8B1CRu2VBGTp1L1Zq7v0Mzj4ma1rATsPBzXl3y-tamjaWCmydHREvI8dD5rkXD38brwmip9D9aOw7qgZQYGtbtFJSRzmzoBSGeUTsaxjPEm9fkVTITKmPLvW5yffffCWdfTBf',
+}
+data = {
+  'title': '김태완',
+  'contents': '머함?',
+  'token': 'f09N2BvkQqOgt4CU5Cyk8b:APA91bE8B1CRu2VBGTp1L1Zq7v0Mzj4ma1rATsPBzXl3y-tamjaWCmydHREvI8dD5rkXD38brwmip9D9aOw7qgZQYGtbtFJSRzmzoBSGeUTsaxjPEm9fkVTITKmPLvW5yffffCWdfTBf'
+}
+# url = 'http://chatbot.lagoon3.duckdns.org/ocr/ocrUserCheck/'
+# url = 'http://chatbot.lagoon3.duckdns.org/foodRecommend/random/'
+url = 'http://chatbot.lagoon3.duckdns.org/fcm/pushNotification/'
 response = requests.post(url, data = json.dumps(data))
-print(response)
+data = json.loads(response.content.decode('utf-8'))
+print('sucess_count : ' + str(data['sucess_count']) + '   failure_count : ' + str(data['failure_count']))
+
 
 
 # from foodRecommend.models import Restaurant
@@ -50,3 +60,12 @@ print(response)
 #   data_entry = Restaurant(restaurant=restaurant_name_list[i], url = restaurant_url_list[i], img = restaurant_image_list[i])
 #   data_entry.save()
 # print(Restaurant.objects.all())
+#ifdata.keys
+
+
+# response = requests.get(url, params=data)
+
+# 응답 확인
+if response.status_code == 200:
+    print('GET request successful')
+    print('Response:', response.text)
