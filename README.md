@@ -14,3 +14,5 @@
 - `foodRecommend/`
     - `random/` : 음식점 랜덤 추천(Sqlite3)
 - `karlo/` : 생성형 이미지
+- `fcm/`
+    - `pushNotification/` : fcm 서버 통신(FireBase)
