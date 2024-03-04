@@ -31,6 +31,8 @@ ALLOWED_HOSTS = ['lagoon3.duckdns.org', 'chatbot.lagoon3.duckdns.org', '*']
 # Application definition
 
 INSTALLED_APPS = [
+    'scheduler.apps.SchedulerConfig',
+    'django_apscheduler',
     'fcm.apps.FcmConfig',
     'foodRecommend.apps.FoodrecommendConfig',
     'webRenderer.apps.WebrendererConfig',
@@ -135,3 +137,5 @@ FIREBASE_CREDENTIALS_PATH = BASE_DIR / 'userInfo/serviceAccountKey.json'
 KAKAOBRAIN_KEY_PATH = BASE_DIR / 'kakao_chatbot/kakaobrainAccountKey.json'
 
 FACE_DETECTION_SERVER_URL = ''
+
+SCHEDULE_TIME = 30

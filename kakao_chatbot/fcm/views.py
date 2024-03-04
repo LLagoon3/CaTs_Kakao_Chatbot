@@ -12,9 +12,11 @@ class pushNotificationView(View):
         if not firebase_admin._apps:
             cred = credentials.Certificate(FIREBASE_CREDENTIALS_PATH)
             firebase_admin.initialize_app(cred)
-    def multicastMessage(self, title, contents):
+    @staticmethod
+    def multicastMessage(title, contents, fcm_token = None):
         fb = FirebaseManager()
-        fcm_token_dict = fb.getToken()
+        if fcm_token is None: fcm_token_dict = fb.getToken()
+        else: fcm_token_dict = fcm_token
         message = messaging.MulticastMessage(
             notification=messaging.Notification(
                 title=title,
@@ -22,8 +24,10 @@ class pushNotificationView(View):
             ),
             tokens=list(fcm_token_dict.values()),
         )
+        print(list(fcm_token_dict.values()))
         return messaging.send_multicast(message)
-    def unicast(self, title, contents, token):
+    @staticmethod
+    def unicastMessage(title, contents, token):
         message = messaging.Message(
             notification = messaging.Notification(
                 title = title,
@@ -35,24 +39,25 @@ class pushNotificationView(View):
     def get(self, request):
         title, contents, token = request.GET.get('title'), request.GET.get('contents'), request.GET.get('token')
         if token is not None:
-            response = self.unicast(title, contents, token)
+            response = pushNotificationView.unicastMessage(title, contents, token)
             print(response)
             return JsonResponse({'response': "good:"})
         elif (title is not None) and (contents is not None):
-            response = self.multicastMessage(title, contents)
+            response = pushNotificationView.multicastMessage(title, contents)
             print('{0} messages were sent successfully'.format(response.success_count))
             return JsonResponse({'sucess_count': response.success_count,
                                     'failure_count': response.failure_count})
         else:
             return JsonResponse({"message": "KEY_ERROR"}, status=400)
     def post(self, request):
+        # return JsonResponse({"message":""})
         data = json.loads(request.body.decode('utf-8'))
         if 'token' in data:
-            response = self.unicast(data['title'], data['contents'], data['token'])
+            response = pushNotificationView.unicastMessage(data['title'], data['contents'], data['token'])
             print(response)
             return JsonResponse({'response': "good:"})
         elif 'title' in data and 'contents' in data:
-            response = self.multicastMessage(data['title'], data['contents'])
+            response = pushNotificationView.multicastMessage(data['title'], data['contents'])
             print('{0} messages were sent successfully'.format(response.success_count))
             return JsonResponse({'sucess_count': response.success_count,
                                 'failure_count': response.failure_count})

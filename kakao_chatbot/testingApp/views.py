@@ -4,6 +4,7 @@ from django.http import JsonResponse
 import json
 import requests
 from userInfo.views import FirebaseManager
+from fcm.views import pushNotificationView
 import firebase_admin
 from firebase_admin import credentials, firestore
 from firebase_admin import messaging
@@ -16,27 +17,20 @@ from kakao_chatbot.settings import FIREBASE_CREDENTIALS_PATH
 
 
 class testView(View):
+    def __init__(self) -> None:
+        self.fm = FirebaseManager()
     def post(self, request):
-        # print("-"*40, "\nrequest : ", request)
-        # data = json.loads(request.body)   
-        # print(data)
-        # try:
-        #     responseBody = {
-        #             #'식당': data['action']['clientExtra']['restaurant'],
-        #             '식당': data['action']['params']['test'],
-        #             '아침': '없음',
-        #             '점심': '없음',
-        #             '저녁': '없음',
-        #     }
-        #     return JsonResponse(responseBody)
-        # except KeyError:
-        #     return JsonResponse({"message": "KEY_ERROR"}, status=400)
-        
-        fb = FirebaseManager()
-        fcm_token_dict = fb.getToken()
-        print(fcm_token_dict.values())
-        return JsonResponse(fcm_token_dict)
-
+        schedul_dict = self.fm.getSchedule({'data': '졸업식'})
+        return JsonResponse({'':''})
+    def get(self, request):
+        schedul_dict = self.fm.getSchedule({'data': '졸업식'})
+        friends_list = schedul_dict['friends']
+        friends_token_dict = self.fm.getToken(friends_list)
+        print(schedul_dict)
+        # response = pushNotificationView.multicastMessage('졸업식', '집가고싶따', list(friends_token_dict.values()))
+        # print('sucess_count', response.success_count)
+        # return JsonResponse({'sucess_count': response.success_count})
+        return JsonResponse(schedul_dict)
 class faceDetection(View):
     def post(self, request):
         data = json.loads(request.body) 
@@ -116,4 +110,17 @@ class pushNotificationToAll(View):
 
         return JsonResponse({'sucess_count': response.success_count,
                              'failure_count': response.failure_count})
-        
+
+# import time
+# from apscheduler.schedulers.background import BackgroundScheduler
+
+
+
+# sched = BackgroundScheduler()
+# @sched.scheduled_job('cron', hour='16', minute='40', id='test_2')
+# def job1():
+#     print(f'job1 : {time.strftime("%H:%M:%S")}')
+# #sched.add_job(job2, 'cron', second='0', id="test_3")
+# print('sched before~')
+# sched.start()
+# print('sched end~')
