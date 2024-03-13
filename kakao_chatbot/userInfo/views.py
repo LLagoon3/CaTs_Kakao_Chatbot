@@ -52,7 +52,7 @@ class FirebaseManager():
             return next(query.stream()).id
         except StopIteration:
             return None
-    def getToken(self, params = None, collection = "KAKAO"):
+    def getToken(self, params = None, collection = "KAKAO"):#params : fcm_Token을 쿼리할 유저 이름 리스트
         users_ref = self.db.collection(collection)
         query_ref = users_ref.where("fcmToken", "!=", "").stream()
         fcm_token_dict = {}
@@ -291,7 +291,14 @@ class setNameView(View):
                   }
               }
             from fcm.views import pushNotificationView
-            print(pushNotificationView.multicastMessage("신규 회원 등록", data["action"]["params"]["Request_name"], fcm_token = self.fm.getToken(collection = "admin")))
+            admin_docs = self.fm.db.collection('admin').get()
+            admin_uids = []
+            for doc in admin_docs:
+                doc = doc.to_dict()
+                admin_uids.append(doc['id'])
+            print(pushNotificationView.multicastMessage("신규 회원 등록", data["action"]["params"]["Request_name"], 
+                                                        fcm_token = self.fm.getToken(params=admin_uids,
+                                                                                     collection = "KAKAO")))
             return JsonResponse(reponseBody, status=200)
         except Exception as e:
             print(e)

@@ -1,3 +1,4 @@
+APScheduler==3.10.4
 asgiref==3.7.2
 beautifulsoup4==4.12.2
 CacheControl==0.13.1
@@ -9,6 +10,7 @@ cryptography==41.0.7
 dbus-python==1.2.18
 distro==1.7.0
 Django==5.0.1
+django-apscheduler==0.6.2
 djangorestframework==3.14.0
 firebase-admin==6.3.0
 google-api-core==2.15.0
@@ -42,11 +44,12 @@ pytesseract==0.3.10
 pytz==2023.3.post1
 requests==2.31.0
 rsa==4.9
+six==1.16.0
 soupsieve==2.5
 sqlparse==0.4.4
 ssh-import-id==5.11
 typing_extensions==4.9.0
 tzdata==2023.4
+tzlocal==5.2
 uritemplate==4.1.1
 urllib3==2.1.0
-uwsgi==2.0.23

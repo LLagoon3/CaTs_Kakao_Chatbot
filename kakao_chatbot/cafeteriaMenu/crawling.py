@@ -52,7 +52,7 @@ class Crawling():
                     tmpDict = dict()
                     tmpDict['date'] = dateT
                     tmpDict['time'] = m[date_count]['label']
-                    tmpDict['restaurant'] = r 
+                    tmpDict['restaurant'] = r
                     tmpDict['menu'] = m[date_count]['main'] + ',' + ','.join(m[date_count]['side'])
                     res.append(tmpDict)
                 
@@ -68,7 +68,7 @@ class Crawling():
         #         tmpR[r].append(tmpMenu)
         #     res[dateT] = [tmpR]
         return res
-    
+
 
 '''
 #### RESULT JSON ####
